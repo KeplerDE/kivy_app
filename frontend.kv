@@ -4,13 +4,15 @@
         padding: 10
         spacing: 10
         Image:
-            source: 'files/screen_test.jpg'
+            id: img
             size_hint_y: 0.7
         TextInput:
+            id: text
             size_hint_y: 0.2
         Button:
             size_hint_y: 0.1
             text: 'Search Image'
+            on_press: root.search_image()
 
 
 <RootWidget>:
