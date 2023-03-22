@@ -7,23 +7,30 @@ import requests
 
 Builder.load_file('frontend.kv')
 
+
 class FirstScreen(Screen):
-    def search_image(self):
+    def get_image_link(self):
         # Get user query from TextInput
         query = self.manager.current_screen.ids.user_query.text
-        # Use any browser you want
-        headers = {'User-agent': 'Mozilla/5.0'}
         # Get wiki page and list from image url
         page = wikipedia.page(query, auto_suggest=False)
         image_link = page.images[0]
-        print(image_link)
+        return image_link
+
+    def download_image(self):
+        headers = {'User-agent': 'Mozilla/5.0'}
         # Download the image
-        req = requests.get(image_link, headers=headers)
+        req = requests.get(self.get_image_link(), headers=headers)
         imagepath = 'files/images.jpg'
         with open(imagepath, 'wb') as file:
             file.write(req.content)
+        return imagepath
+
+    def set_image(self):
         # Set the image in the Image widget
-        self.manager.current_screen.ids.img.source = imagepath
+        self.manager.current_screen.ids.img.source = self.download_image()
+
+
 class RootWidget(ScreenManager):
     pass
 
